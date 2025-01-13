@@ -64,6 +64,3 @@ logs_df.to_csv("logs2_with_anomalies.csv", index=False)
 - **Isolation Forest** : C'est un modèle d'apprentissage non supervisé qui est efficace pour identifier les anomalies dans des ensembles de données volumineux.
 - **Sauvegarde des Résultats** : Les anomalies sont ajoutées au DataFrame original et le résultat est sauvegardé dans un nouveau fichier CSV.
 
-### Conclusion
-
-Ce processus permet d'analyser les logs récupérés, de détecter les anomalies et de sauvegarder ces résultats pour un examen plus approfondi. La combinaison du prétraitement des données et de l'utilisation d'algorithmes d'apprentissage automatique permet d'identifier efficacement les anomalies qui pourraient indiquer des comportements inhabituels ou des erreurs dans les systèmes surveillés.
