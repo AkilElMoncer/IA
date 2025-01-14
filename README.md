@@ -19,7 +19,9 @@ Le prétraitement des données est réalisé à l'aide d'un script Python qui su
 Les colonnes contenant des données catégoriques sont transformées en colonnes binaires grâce à la méthode **One-Hot Encoding** de Scikit-learn. Cette transformation permet aux modèles d'apprentissage automatique de traiter correctement les catégories sous forme numérique.
 
 ### 4. **Détection des Anomalies**
-Un algorithme d'apprentissage non supervisé, **Isolation Forest**, est utilisé pour détecter les anomalies dans les logs. Le taux de contamination est fixé à 5 %, ce qui signifie que le modèle considère environ 5 % des données comme des anomalies potentielles.
+L’algorithme Isolation Forest calcule un score d’anomalie pour chaque observation en isolant les données de manière récursive. En choisissant une variable et un seuil de coupure au hasard, il évalue la facilité avec laquelle une observation peut être isolée. Cela permet d'identifier efficacement les anomalies potentielles dans le dataset.
+
+Le taux de contamination est fixé à 5 %, ce qui signifie que le modèle considère environ 5 % des données comme des anomalies potentielles.
 
 ### 5. **Résultats et Exportation**
 - Les prédictions de l'algorithme sont ajoutées sous forme de colonne supplémentaire dans le fichier d'origine.
