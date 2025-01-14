@@ -69,23 +69,20 @@ logs_df.to_csv("logs2_with_anomalies.csv", index=False)
 
 ## Instructions d'Utilisation
 
-1. **Cloner le Projet** :
-   ```bash
-   git clone https://github.com/votre-repo/IA_anomalie.git
-   ```
-
-2. **Installer les Prérequis** :
+1. **Installer les Prérequis** :
    ```bash
    pip install pandas scikit-learn
    ```
 
-3. **Exécuter le Script** :
+2. **Exécuter le Script** :
    ```bash
-   python script.py
+   python3 iasiem2.py
    ```
 
-4. **Vérifier les Résultats** :
+3. **Vérifier les Résultats** :
    - Le fichier `logs2_with_anomalies.csv` contiendra les résultats finaux avec une colonne `anomaly` et des annotations textuelles (`Normal` ou `Anomalie détectée`).
+  
+   - 
 
 ---
 
