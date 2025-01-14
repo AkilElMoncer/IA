@@ -24,7 +24,7 @@ Un algorithme d'apprentissage non supervisé, **Isolation Forest**, est utilisé
 ### 5. **Résultats et Exportation**
 - Les prédictions de l'algorithme sont ajoutées sous forme de colonne supplémentaire dans le fichier d'origine.
 - Les anomalies sont indiquées par une valeur `-1`, tandis que les données normales sont marquées par `1`.
-- Les résultats finaux sont exportés dans un fichier nommé `logs2_with_anomalies.csv`, qui inclut les logs originaux ainsi que les annotations des anomalies.
+- Les résultats finaux sont exportés dans un fichier nommé `logs_with_anomalies.csv`, qui inclut les logs originaux ainsi que les annotations des anomalies.
 
 ---
 
@@ -63,7 +63,7 @@ logs_df.to_csv("logs2_with_anomalies.csv", index=False)
 ## Fichiers du Projet
 
 - `logs.csv` : Fichier de logs initial contenant les données brutes.
-- `logs2_with_anomalies.csv` : Fichier final contenant les anomalies annotées.
+- `logs_with_anomalies.csv` : Fichier final contenant les anomalies annotées.
 
 ---
 
@@ -76,13 +76,14 @@ logs_df.to_csv("logs2_with_anomalies.csv", index=False)
 
 2. **Exécuter le Script** :
    ```bash
-   python3 iasiem2.py
+   python3 iasiem3.py
    ```
 
 3. **Vérifier les Résultats** :
-   - Le fichier `logs2_with_anomalies.csv` contiendra les résultats finaux avec une colonne `anomaly` et des annotations textuelles (`Normal` ou `Anomalie détectée`).
+   - Le fichier `logs_with_anomalies.csv` contiendra les résultats finaux avec une colonne `anomaly` et des annotations textuelles (`Normal` ou `Anomalie détectée`).
   
-   - 
+     <img width="316" alt="Capture d’écran 2025-01-14 à 09 22 36" src="https://github.com/user-attachments/assets/5f18be9a-7896-4a8d-a0d0-0023beeb8cca" />
+
 
 ---
 
