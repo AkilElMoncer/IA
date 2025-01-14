@@ -95,10 +95,15 @@ print(f"Fichier One-Hot Encoded (500 premières lignes) exporté : {encoded_outp
 ```
 **Fonctionnement du code**
 Chargement des données : on charge les logs depuis un fichier CSV appelé logs.csv dans un DataFrame Pandas nommé logs_df.
+
 One-hot-encoding : on transforme les colonnes catégoriques spécifiées (log.file.path, message, event.original) en plusieurs colonnes binaires (0 ou 1), où chaque colonne représente une valeur unique d'origine.
+
 Transformation des données : La fonction transforme les colonnes spécifiées en une matrice avec l'encodage One-Hot.
+
+
 Export du one-hot-encoding: Les 500 premières lignes du DataFrame encodé sont exportées dans un fichier CSV appelé log2s_onehot_encoded.csv pour vérifier.
 Pipeline : La pipeline combine le prétraitement (one-hot-encoding) avec le modèle Isolation Forest.
+
 Prédiction des anomalies : 1 si le log est considéré comme normal, -1 si le log est considéré comme une anomalie.
 
 ---
