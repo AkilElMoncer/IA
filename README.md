@@ -95,8 +95,7 @@ print(f"Fichier One-Hot Encoded (500 premières lignes) exporté : {encoded_outp
 
 ```
 
-- **Structure Améliorée** : Chaque étape est clairement isolée dans le code pour une meilleure lisibilité. Le paramètre `random_state` est ajouté pour garantir la reproductibilité.
-- **Encodage** : Les colonnes `status` et `event_type` sont transformées en variables numériques grâce au One-Hot Encoding.
+- **Encodage** : Les colonnes `log.file.path`,`message`,`event.original` sont transformées en variables numériques grâce au One-Hot Encoding.
 - **Détection des Anomalies** : Isolation Forest identifie les anomalies avec un seuil de contamination défini à 5 %.
 - **Exportation des Résultats** : Le fichier final inclut les logs originaux avec une colonne supplémentaire pour les anomalies.
 
