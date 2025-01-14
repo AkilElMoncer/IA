@@ -21,6 +21,7 @@ Il fonctionne sur des données multidimensionnelles, qu'elles soient numériques
 L'Isolation Forest exploite la rareté et la dissimilarité des anomalies pour les détecter, ce qui en fait un choix naturel pour des applications comme l'analyse de logs.
 
 ### 4. **Résultats et Exportation**
+
 - Les prédictions de l'algorithme sont ajoutées sous forme de colonne supplémentaire dans le fichier d'origine.
 - Les anomalies sont indiquées par une valeur `-1`, tandis que les données normales sont marquées par `1`.
 - Les résultats finaux sont exportés dans un fichier nommé `logs_with_anomalies.csv`, qui inclut les logs originaux ainsi que les annotations des anomalies.
@@ -93,7 +94,12 @@ print(f"Fichier One-Hot Encoded (500 premières lignes) exporté : {encoded_outp
 
 ```
 **Fonctionnement du code**
-*Chargement des données*
+Chargement des données : on charge les logs depuis un fichier CSV appelé logs.csv dans un DataFrame Pandas nommé logs_df.
+One-hot-encoding : on transforme les colonnes catégoriques spécifiées (log.file.path, message, event.original) en plusieurs colonnes binaires (0 ou 1), où chaque colonne représente une valeur unique d'origine.
+Transformation des données : La fonction transforme les colonnes spécifiées en une matrice avec l'encodage One-Hot.
+Export du one-hot-encoding: Les 500 premières lignes du DataFrame encodé sont exportées dans un fichier CSV appelé log2s_onehot_encoded.csv pour vérifier.
+Pipeline : La pipeline combine le prétraitement (one-hot-encoding) avec le modèle Isolation Forest.
+Prédiction des anomalies : 1 si le log est considéré comme normal, -1 si le log est considéré comme une anomalie.
 
 ---
 
