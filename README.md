@@ -103,6 +103,7 @@ Transformation des données : La fonction transforme les colonnes spécifiées e
 
 
 Export du one-hot-encoding: Les 500 premières lignes du DataFrame encodé sont exportées dans un fichier CSV appelé log2s_onehot_encoded.csv pour vérifier.
+
 Pipeline : La pipeline combine le prétraitement (one-hot-encoding) avec le modèle Isolation Forest.
 
 Prédiction des anomalies : 1 si le log est considéré comme normal, -1 si le log est considéré comme une anomalie.
