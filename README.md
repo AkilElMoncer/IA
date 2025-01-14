@@ -96,6 +96,4 @@ logs_df.to_csv("logs_with_anomalies.csv", index=False)
 - Automatiser le pipeline complet avec une connexion directe à Elasticsearch pour traiter les données en temps réel.
 - Ajouter d'autres algorithmes de détection d'anomalies pour comparer leurs performances.
 
----
 
-Ce projet fournit une base solide pour l'analyse des logs et la détection d'anomalies, avec des options pour étendre ses fonctionnalités selon les besoins.
