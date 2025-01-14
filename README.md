@@ -94,6 +94,6 @@ logs_df.to_csv("logs_with_anomalies.csv", index=False)
 
 - Intégrer une visualisation des anomalies avec des outils comme Matplotlib ou Seaborn.
 - Automatiser le pipeline complet avec une connexion directe à Elasticsearch pour traiter les données en temps réel.
-- Ajouter d'autres algorithmes de détection d'anomalies pour comparer leurs performances.
-
+- Discrimination des alertes légitime.
+-Adoption des règles firewall.
 
