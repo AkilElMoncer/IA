@@ -35,24 +35,64 @@ L’algorithme **Isolation Forest** est utilisé pour calculer un score d’anom
 
 ```python
 import pandas as pd
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.ensemble import IsolationForest
+from sklearn.pipeline import make_pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
 
-# Chargement du fichier de logs
-logs_df = pd.read_csv("logs.csv")
+# Charger les logs
+file_path = "logs.csv"  # Remplacez par le chemin de votre fichier
+logs_df = pd.read_csv(file_path)
 
-# Encodage des variables catégoriques
-encoder = OneHotEncoder()
-encoded_data = encoder.fit_transform(logs_df[['status', 'event_type']])
-logs_df_encoded = pd.concat([logs_df, pd.DataFrame(encoded_data.toarray())], axis=1)
+# Créer le préprocesseur pour One-Hot Encoding
+onehot_encoder = OneHotEncoder(handle_unknown='ignore')
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('onehot', onehot_encoder, ['log.file.path', 'message', 'event.original'])
+    ]
+)
 
-# Application d'Isolation Forest pour la détection d'anomalies
-model = IsolationForest(contamination=0.05, random_state=42)
-anomalies = model.fit_predict(logs_df_encoded)
-logs_df['anomaly'] = anomalies
+# Transformer les données avec One-Hot Encoding
+encoded_array = preprocessor.fit_transform(logs_df)
+encoded_df = pd.DataFrame(
+    encoded_array.toarray(),
+    columns=preprocessor.named_transformers_['onehot'].get_feature_names_out(['log.file.path', 'message', 'event.original'])
+)
 
-# Export des résultats
-logs_df.to_csv("logs_with_anomalies.csv", index=False)
+# Exporter les 500 premières lignes du fichier One-Hot Encoding pour inspection
+encoded_output_file = "log2s_onehot_encoded.csv"
+encoded_df.head(500).to_csv(encoded_output_file, index=False)
+
+# Créer le pipeline pour la détection d'anomalies
+pipeline = make_pipeline(
+    preprocessor,
+    IsolationForest(contamination=0.05, random_state=42)  # Détection d'anomalies
+)
+
+# Entraîner le modèle
+pipeline.fit(logs_df)
+
+# Faire des prédictions (1: normal, -1: anomalie)
+logs_df['anomaly'] = pipeline.predict(logs_df)
+
+# Ajouter une colonne pour indiquer les anomalies avec un message
+logs_df['anomaly_message'] = logs_df['anomaly'].apply(lambda x: "Anomalie détectée" if x == -1 else "Normal")
+
+# Séparer les anomalies pour examen
+anomalies = logs_df[logs_df['anomaly'] == -1]
+
+# Exporter les résultats dans un fichier CSV
+output_file = "logs_with_anomalies.csv"
+logs_df.to_csv(output_file, index=False)
+
+# Résumé des anomalies
+total_logs = len(logs_df)
+total_anomalies = len(anomalies)
+print(f"Total de logs : {total_logs}")
+print(f"Total d'anomalies détectées : {total_anomalies}")
+print(f"Résultats exportés dans le fichier : {output_file}")
+print(f"Fichier One-Hot Encoded (500 premières lignes) exporté : {encoded_output_file}")
+
 ```
 
 - **Structure Améliorée** : Chaque étape est clairement isolée dans le code pour une meilleure lisibilité. Le paramètre `random_state` est ajouté pour garantir la reproductibilité.
