@@ -1,4 +1,4 @@
-# Projet de Détection d'Anomalies à Partir de Logs
+# IA
 
 Ce projet vise à analyser des logs récupérés depuis Elasticsearch pour en extraire des anomalies. Le processus de traitement des données est effectué en plusieurs étapes, depuis la récupération des logs jusqu'à l'application de techniques d'apprentissage automatique pour détecter des anomalies.
 
