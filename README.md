@@ -94,6 +94,7 @@ print(f"Fichier One-Hot Encoded (500 premières lignes) exporté : {encoded_outp
 
 ```
 **Fonctionnement du code**
+
 Chargement des données : on charge les logs depuis un fichier CSV appelé logs.csv dans un DataFrame Pandas nommé logs_df.
 
 One-hot-encoding : on transforme les colonnes catégoriques spécifiées (log.file.path, message, event.original) en plusieurs colonnes binaires (0 ou 1), où chaque colonne représente une valeur unique d'origine.
