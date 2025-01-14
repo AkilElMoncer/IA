@@ -66,6 +66,7 @@ logs_df.to_csv("logs_with_anomalies.csv", index=False)
 
 - `logs.csv` : Fichier de logs initial contenant les données brutes.
 - `logs_with_anomalies.csv` : Fichier final contenant les anomalies annotées.
+-  `log2s_onehot_encoded.csv` : Fichier contenant l'encoding One hot.
 
 ---
 
