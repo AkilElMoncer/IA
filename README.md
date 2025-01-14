@@ -1,39 +1,38 @@
-# IA
+# IA : Détection d'Anomalies dans les Logs
 
-Ce projet vise à analyser des logs récupérés depuis Elasticsearch pour en extraire des anomalies. Le processus de traitement des données est effectué en plusieurs étapes, depuis la récupération des logs jusqu'à l'application de techniques d'apprentissage automatique pour détecter des anomalies.
+Ce projet a pour objectif d'analyser des logs récupérés depuis Elasticsearch afin d'identifier des anomalies. Le processus repose sur un pipeline complet qui prépare les données et utilise des algorithmes d'apprentissage automatique pour détecter des comportements inhabituels dans les logs.
 
-## Description du Processus
+---
+
+## Description du Projet
 
 ### 1. **Récupération des Logs**
-Les logs ont été récupérés depuis Elasticsearch et ont été sauvegardés dans un fichier `.csv`. Ce fichier contient toutes les données nécessaires pour l’analyse.
+Les logs sont extraits depuis Elasticsearch et sauvegardés dans un fichier `.csv`. Ce fichier contient toutes les informations nécessaires à l'analyse, comme les colonnes numériques ou catégoriques qui seront traitées dans les étapes suivantes.
 
 ### 2. **Prétraitement des Données**
-Une fois les logs collectés, un script Python a été utilisé pour charger et préparer ces données avant leur analyse. Voici les étapes clés du prétraitement :
+Le prétraitement des données est réalisé à l'aide d'un script Python qui suit les étapes suivantes :
 
-- **Chargement des Données** : Les logs sont chargés dans un DataFrame Pandas à partir du fichier CSV.
-- **Nettoyage des Données** : Les valeurs manquantes ou incorrectes sont traitées (par exemple, remplacement des valeurs manquantes par des moyennes ou suppression des lignes erronées).
+- **Chargement des Données** : Les logs sont importés dans un DataFrame Pandas.
+- **Nettoyage des Données** : Les valeurs manquantes ou incorrectes sont gérées pour garantir une qualité optimale des données utilisées en aval (exemple : suppression des lignes erronées ou remplissage des valeurs manquantes).
 
-### 3. **One-Hot Encoding**
-Pour préparer les données à l'analyse, une technique appelée "One-Hot Encoding" a été appliquée aux variables catégorielles. Cette méthode transforme chaque catégorie en une nouvelle colonne binaire, ce qui est essentiel pour les algorithmes d'apprentissage automatique qui ne peuvent pas traiter directement les données sous forme de texte.
-
-Par exemple, si une variable "status" a les valeurs possibles ["OK", "Warning", "Error"], l'encodage one-hot transforme cette variable en trois nouvelles colonnes : `status_OK`, `status_Warning`, et `status_Error`. Chaque colonne contient 1 si la ligne correspond à cette catégorie, sinon 0.
+### 3. **Encodage des Données (One-Hot Encoding)**
+Les colonnes contenant des données catégoriques sont transformées en colonnes binaires grâce à la méthode **One-Hot Encoding** de Scikit-learn. Cette transformation permet aux modèles d'apprentissage automatique de traiter correctement les catégories sous forme numérique.
 
 ### 4. **Détection des Anomalies**
-Une fois les données préparées, nous avons utilisé un algorithme pour détecter des anomalies dans les logs. Cet algorithme identifie des événements ou comportements qui dévient des tendances habituelles dans les données.
+Un algorithme d'apprentissage non supervisé, **Isolation Forest**, est utilisé pour détecter les anomalies dans les logs. Le taux de contamination est fixé à 5 %, ce qui signifie que le modèle considère environ 5 % des données comme des anomalies potentielles.
 
-Les anomalies détectées sont ensuite enregistrées dans un nouveau fichier CSV contenant à la fois les logs et les anomalies détectées pour chaque ligne.
+### 5. **Résultats et Exportation**
+- Les prédictions de l'algorithme sont ajoutées sous forme de colonne supplémentaire dans le fichier d'origine.
+- Les anomalies sont indiquées par une valeur `-1`, tandis que les données normales sont marquées par `1`.
+- Les résultats finaux sont exportés dans un fichier nommé `logs2_with_anomalies.csv`, qui inclut les logs originaux ainsi que les annotations des anomalies.
 
-### 5. **Sortie des Résultats**
-Les résultats finaux sont enregistrés dans un fichier `logs2_with_anomalies.csv`, qui contient les logs originaux ainsi que les anomalies détectées par l'algorithme.
+---
 
-## Code Python
+## Fonctionnement du Script Python
 
-### Explication du Code
-
-Voici un résumé du fonctionnement principal du code :
+### Aperçu du Code
 
 ```python
-# Chargement des bibliothèques nécessaires
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.ensemble import IsolationForest
@@ -41,26 +40,61 @@ from sklearn.ensemble import IsolationForest
 # Chargement du fichier de logs
 logs_df = pd.read_csv("logs.csv")
 
-# Prétraitement des données : application du One-Hot Encoding sur les variables catégorielles
+# Encodage des variables catégoriques
 encoder = OneHotEncoder()
 encoded_data = encoder.fit_transform(logs_df[['status', 'event_type']])
-
-# Ajout des colonnes encodées au DataFrame original
 logs_df_encoded = pd.concat([logs_df, pd.DataFrame(encoded_data.toarray())], axis=1)
 
-# Détection des anomalies à l'aide de l'algorithme Isolation Forest
+# Application d'Isolation Forest pour la détection d'anomalies
 model = IsolationForest(contamination=0.05)
 anomalies = model.fit_predict(logs_df_encoded)
-
-# Ajout des anomalies détectées au DataFrame
 logs_df['anomaly'] = anomalies
 
-# Sauvegarde des résultats dans un fichier CSV
+# Export des résultats
 logs_df.to_csv("logs2_with_anomalies.csv", index=False)
 ```
 
-- **Chargement des bibliothèques** : Nous utilisons Pandas pour la gestion des données, `OneHotEncoder` de scikit-learn pour l'encodage des variables catégorielles et `IsolationForest` pour la détection des anomalies.
-- **One-Hot Encoding** : Cette étape transforme les colonnes catégorielles en variables numériques adaptées pour l'apprentissage automatique.
-- **Isolation Forest** : C'est un modèle d'apprentissage non supervisé qui est efficace pour identifier les anomalies dans des ensembles de données volumineux.
-- **Sauvegarde des Résultats** : Les anomalies sont ajoutées au DataFrame original et le résultat est sauvegardé dans un nouveau fichier CSV.
+- **Encodage** : Les colonnes `status` et `event_type` sont transformées en variables numériques grâce au One-Hot Encoding.
+- **Détection des Anomalies** : Isolation Forest identifie les anomalies avec un seuil de contamination défini à 5 %.
+- **Exportation des Résultats** : Le fichier final inclut les logs originaux avec une colonne supplémentaire pour les anomalies.
 
+---
+
+## Fichiers du Projet
+
+- `logs.csv` : Fichier de logs initial contenant les données brutes.
+- `logs2_with_anomalies.csv` : Fichier final contenant les anomalies annotées.
+
+---
+
+## Instructions d'Utilisation
+
+1. **Cloner le Projet** :
+   ```bash
+   git clone https://github.com/votre-repo/IA_anomalie.git
+   ```
+
+2. **Installer les Prérequis** :
+   ```bash
+   pip install pandas scikit-learn
+   ```
+
+3. **Exécuter le Script** :
+   ```bash
+   python script.py
+   ```
+
+4. **Vérifier les Résultats** :
+   - Le fichier `logs2_with_anomalies.csv` contiendra les résultats finaux avec une colonne `anomaly` et des annotations textuelles (`Normal` ou `Anomalie détectée`).
+
+---
+
+## Améliorations Possibles
+
+- Intégrer une visualisation des anomalies avec des outils comme Matplotlib ou Seaborn.
+- Automatiser le pipeline complet avec une connexion directe à Elasticsearch pour traiter les données en temps réel.
+- Ajouter d'autres algorithmes de détection d'anomalies pour comparer leurs performances.
+
+---
+
+Ce projet fournit une base solide pour l'analyse des logs et la détection d'anomalies, avec des options pour étendre ses fonctionnalités selon les besoins.
