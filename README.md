@@ -93,7 +93,7 @@ print(f"Résultats exportés dans le fichier : {output_file}")
 print(f"Fichier One-Hot Encoded (500 premières lignes) exporté : {encoded_output_file}")
 
 ```
-**Fonctionnement du code**
+###Fonctionnement du code
 
 Chargement des données : on charge les logs depuis un fichier CSV appelé logs.csv dans un DataFrame Pandas nommé logs_df.
 
