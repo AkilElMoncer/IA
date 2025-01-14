@@ -79,6 +79,9 @@ logs_df.to_csv("logs2_with_anomalies.csv", index=False)
    python3 iasiem3.py
    ```
 
+   ![image](https://github.com/user-attachments/assets/69ba2d15-3700-4746-9f9c-d7730a7ef8bf)
+
+
 3. **Vérifier les Résultats** :
    - Le fichier `logs_with_anomalies.csv` contiendra les résultats finaux avec une colonne `anomaly` et des annotations textuelles (`Normal` ou `Anomalie détectée`).
   
