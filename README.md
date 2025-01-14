@@ -7,25 +7,23 @@ Ce projet a pour objectif d'analyser des logs récupérés depuis Elasticsearch 
 ## Description du Projet
 
 ### 1. **Récupération des Logs**
-Les logs sont extraits depuis Elasticsearch et sauvegardés dans un fichier `.csv`. Ce fichier contient toutes les informations nécessaires à l'analyse, comme les colonnes numériques ou catégoriques qui seront traitées dans les étapes suivantes.
+Les logs sont extraits avec l'utilisation de logstash puis extraits avec Elasticsearch et sauvegardés dans un fichier `.csv`. Ce fichier contient toutes les informations nécessaires à l'analyse, comme les colonnes numériques ou catégoriques qui seront traitées dans les étapes suivantes.
 
-### 2. **Prétraitement des Données**
-Le prétraitement des données est réalisé à l'aide d'un script Python qui suit les étapes suivantes :
-
-- **Chargement des Données** : Les logs sont importés dans un DataFrame Pandas.
-
-### 3. **Encodage des Données (One-Hot Encoding)**
+### 2. **Encodage des Données (One-Hot Encoding)**
 Les colonnes contenant des données catégoriques sont transformées en colonnes binaires grâce à la méthode **One-Hot Encoding** de Scikit-learn. Cette transformation permet aux modèles d'apprentissage automatique de traiter correctement les catégories sous forme numérique.
 
-### 4. **Détection des Anomalies**
-L’algorithme **Isolation Forest** est utilisé pour calculer un score d’anomalie pour chaque observation. Cet algorithme fonctionne en isolant les données de manière récursive, en choisissant une variable et un seuil de coupure au hasard, afin d'évaluer la facilité avec laquelle une observation peut être isolée. Cela permet d’identifier efficacement les anomalies potentielles dans le dataset.
+### 3. **Détection des Anomalies**
 
-**Choix du Modèle** : Isolation Forest a été choisi pour sa capacité à traiter les données non étiquetées et à détecter des anomalies même dans des jeux de données de grande taille. Son taux de contamination est configuré à 5 %, ce qui correspond à une hypothèse réaliste dans la majorité des cas d'analyse de logs.
+L'Isolation Forest est un algorithme de machine learning utilisé pour la détection d'anomalies. Son objectif principal est d'isoler les points de données atypiques (anomalies) dans un dataset. L'idée derrière l'Isolation Forest repose sur le fait que les anomalies sont plus faciles à isoler que les points normaux, car elles sont rares et différentes des autres observations.
 
-### 5. **Résultats et Exportation**
+Nous avons choisi ce modéle car contrairement à d'autres techniques de détection d'anomalies, l'Isolation Forest est capable de gérer de grands volumes de données avec un faible coût de calcul.
+Il fonctionne sur des données multidimensionnelles, qu'elles soient numériques, catégoriques (avec un encodage approprié), ou mixtes.
+L'Isolation Forest exploite la rareté et la dissimilarité des anomalies pour les détecter, ce qui en fait un choix naturel pour des applications comme l'analyse de logs.
+
+### 4. **Résultats et Exportation**
 - Les prédictions de l'algorithme sont ajoutées sous forme de colonne supplémentaire dans le fichier d'origine.
 - Les anomalies sont indiquées par une valeur `-1`, tandis que les données normales sont marquées par `1`.
-- Les résultats finaux sont exportés dans un fichier nommé `logs_with_anomalies.csv`, qui inclut les logs originaux ainsi que les annotations des anomalies. Ces prédictions sont validées pour leur pertinence, en vérifiant les cas extrêmes et en les corrélant avec les logs réels pour assurer leur fiabilité.
+- Les résultats finaux sont exportés dans un fichier nommé `logs_with_anomalies.csv`, qui inclut les logs originaux ainsi que les annotations des anomalies.
 
 ---
 
@@ -94,10 +92,8 @@ print(f"Résultats exportés dans le fichier : {output_file}")
 print(f"Fichier One-Hot Encoded (500 premières lignes) exporté : {encoded_output_file}")
 
 ```
-
-- **Encodage** : Les colonnes `log.file.path`,`message`,`event.original` sont transformées en variables numériques grâce au One-Hot Encoding.
-- **Détection des Anomalies** : Isolation Forest identifie les anomalies avec un seuil de contamination défini à 5 %.
-- **Exportation des Résultats** : Le fichier final inclut les logs originaux avec une colonne supplémentaire pour les anomalies.
+**Fonctionnement du code**
+*Chargement des données*
 
 ---
 
